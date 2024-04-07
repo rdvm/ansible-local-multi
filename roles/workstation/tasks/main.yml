@@ -8,6 +8,7 @@
       - chromium
       - cifs-utils
       - dnsmasq
+      - fastfetch
       - firefox
       - fwupd
       - interception-caps2esc
@@ -31,6 +32,7 @@
       - ttf-jetbrains-mono-nerd
       - ttf-terminus-nerd
       - wezterm
+      - wf-recorder
       - wireplumber
       - yazi
     state: present
@@ -41,13 +43,12 @@
     use: yay
     name:
       - 1password
+      - brave-bin
       - etcher-bin
-      - fastfetch-git
       - flavours
       - google-chrome
       - powershell-bin
       - python-grip-git
       - wal-telegram-git
-      - wf-recorder-git
       - wyeb-git
     state: present
