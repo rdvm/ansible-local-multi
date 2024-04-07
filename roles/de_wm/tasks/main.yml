@@ -1,0 +1,94 @@
+---
+- name: Install Hyprland
+  when: desktop == "hyprland"
+  block:
+    - name: Install hyprland
+      community.general.pacman:
+        name:
+          - dunst
+          - gnome-themes-extra
+          - grim
+          - gucharmap
+          - hypridle
+          - hyprland
+          - hyprlock
+          - hyprpaper
+          - imv
+          - kitty
+          - polkit-gnome
+          - qt5-wayland
+          - qt6-wayland
+          - sddm
+          - slurp
+          - swappy
+          - waybar
+          - wl-clipboard
+          - xdg-desktop-portal-hyprland
+        state: present
+      become: true
+
+    - name: Install 'hyprland' AUR packages
+      kewlfft.aur.aur:
+        use: yay
+        name:
+          - chili-sddm-theme
+          - grimblast-git
+          - nwg-look-bin
+          - rofi-lbonn-wayland
+          - sddm-config-editor-git
+          - wlogout
+        state: present
+      # become: true
+      # become_user: aur_builder
+
+    - name: Start systemd service - sddm.service
+      ansible.builtin.systemd:
+        name: sddm.service
+        enabled: yes
+      become: true
+
+- name: Install desktop environment
+  when: desktop == "kde"
+  block:
+    - name: Install Plasma
+      community.general.pacman:
+        name:
+          - plasma-meta
+          - plasma-workspace
+          - kde-graphics-meta
+          - kde-multimedia-meta
+          - kde-network-meta
+          - kde-pim-meta
+          - kde-sdk-meta
+          - kde-system-meta
+          - kde-utilities-meta
+          - sddm
+          - xdg-desktop-portal-kde
+        state: present
+      become: true
+
+    - name: Start systemd service - sddm.service
+      ansible.builtin.systemd:
+        name: sddm.service
+        enabled: yes
+      become: true
+
+- name: Install desktop environment
+  when: desktop == "gnome"
+  block:
+    - name: Install Gnome
+      community.general.pacman:
+        name:
+          - gnome
+          - gnome-shell
+          - gnome-control-center
+          - gdm
+          - xdg-desktop-portal-gnome
+        state: present
+      become: true
+
+    - name: Start systemd service - gdm.service
+      ansible.builtin.systemd:
+        name: gdm.service
+        enabled: yes
+      become: true

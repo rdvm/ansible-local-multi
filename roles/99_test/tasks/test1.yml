@@ -1,0 +1,10 @@
+---
+- name: Print debug message
+  when: desktop == "hyprland"
+  debug:
+    msg: Testing
+
+- name: Print debug message
+  when: desktop == "gnome"
+  debug:
+    msg: HyprHyprHypr!!

@@ -1,0 +1,4 @@
+---
+- name: Print debug message
+  debug:
+    msg: Testing test2.yml

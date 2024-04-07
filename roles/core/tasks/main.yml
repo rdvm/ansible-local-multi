@@ -1,0 +1,106 @@
+---
+- name: Install packages
+  community.general.pacman:
+    name:
+      - base
+      - base-devel
+      - bind
+      - btop
+      - efibootmgr
+      - fd
+      - fzf
+      - git
+      - htop
+      - keychain
+      - libfido2
+      - man-db
+      - man-pages
+      - openssh
+      - pacman-contrib
+      - reflector
+      - ripgrep
+      - starship
+      - stow
+      - sudo
+      - tldr
+      - tree
+      - tmux
+      - unzip
+      - usbutils
+      - vi
+      - vim
+      - wget
+      - xdg-desktop-portal
+      - xdg-utils
+      - xterm
+      - zip
+      - zsh
+    state: present
+  become: true
+
+- name: Start systemd service - systemd-modules-load.service
+  ansible.builtin.systemd:
+    name: systemd-modules-load.service
+    state: started
+    enabled: yes
+  become: true
+
+- name: Start systemd service - systemd-timesyncd
+  ansible.builtin.systemd:
+    name: systemd-timesyncd
+    state: started
+    enabled: yes
+  become: true
+
+- name: Start systemd service - paccache.timer
+  ansible.builtin.systemd:
+    name: paccache.timer
+    state: started
+    enabled: yes
+  become: true
+
+- name: Update reflector configuration file
+  ansible.builtin.template:
+    src: reflector.conf.j2
+    dest: /etc/xdg/reflector/reflector.conf
+    backup: no
+    owner: root
+    group: root
+    mode: 0644
+  become: true
+
+- name: Start systemd service - reflector.service
+  ansible.builtin.systemd:
+    name: reflector.service
+    state: started
+  become: true
+
+- name: Start systemd service - reflector.timer
+  ansible.builtin.systemd:
+    name: reflector.timer
+    state: started
+    enabled: yes
+  become: true
+
+- name: Update pacman configuration file
+  ansible.builtin.template:
+    src: pacman.conf.j2
+    dest: /etc/pacman.conf
+    backup: no
+    owner: root
+    group: root
+    mode: 0644
+  become: true
+
+- name: Start systemd service - systemd-boot-update.service
+  ansible.builtin.systemd:
+    name: systemd-boot-update.service
+    state: started
+    enabled: yes
+  become: true
+
+- name: Upgrade system
+  community.general.pacman:
+    update_cache: yes
+    upgrade: yes
+  become: true

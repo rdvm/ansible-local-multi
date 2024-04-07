@@ -1,0 +1,55 @@
+---
+- name: AUR setup
+  ansible.builtin.import_tasks: aur.yml
+
+- name: Install 'workstation' pacman packages
+  community.general.pacman:
+    name:
+      - chromium
+      - cifs-utils
+      - dnsmasq
+      - firefox
+      - fwupd
+      - interception-caps2esc
+      - mpv
+      - network-manager-applet
+      - networkmanager
+      - noto-fonts
+      - noto-fonts-cjk
+      - noto-fonts-emoji
+      - npm
+      - pavucontrol
+      - pipewire
+      - pipewire-alsa
+      - pipewire-jack
+      - pipewire-pulse
+      - tailscale
+      - telegram-desktop
+      - thunar
+      - thunar-archive-plugin
+      - ttf-ibmplex-mono-nerd
+      - ttf-jetbrains-mono-nerd
+      - ttf-terminus-nerd
+      - wezterm
+      - wireplumber
+      - yazi
+    state: present
+  become: true
+
+- name: Install 'workstation' AUR packages
+  kewlfft.aur.aur:
+    use: yay
+    name:
+      - 1password
+      - etcher-bin
+      - fastfetch-git
+      - flavours
+      - google-chrome
+      - powershell-bin
+      - python-grip-git
+      - wal-telegram-git
+      - wf-recorder-git
+      - wyeb-git
+    state: present
+  # become: true
+  # become_user: aur_builder

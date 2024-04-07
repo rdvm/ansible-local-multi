@@ -1,0 +1,24 @@
+---
+- name: Main play
+  hosts: all
+  collections:
+    - kewlfft.aur.aur
+  vars:
+    - desktop: hyprland
+  roles:
+    - core
+    - microcode
+    - display_server
+    - workstation
+    - de_wm
+    - laptop
+    - bluetooth
+
+  tasks:
+    - name: Install neovim-nightly
+      kewlfft.aur.aur:
+        use: yay
+        name:
+          - neovim-nightly-bin
+      # become: true
+      # become_user: aur_builder
