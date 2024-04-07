@@ -1,5 +1,5 @@
 ---
-- name: Install Xorg
+- name: Install Xorg-Wayland
   community.general.pacman:
     name:
       - xorg-xwayland
@@ -7,8 +7,7 @@
   become: true
 
 - name: Detect GPU
-  # ansible.builtin.shell: set -o pipefail && lspci -v | grep -A1 -e VGA -e 3D  # noqa command-instead-of-shell
-  ansible.builtin.shell: set -o pipefail && lspci | grep -i 'VGA\|3D\|display'  # noqa command-instead-of-shell
+  ansible.builtin.shell: set -o pipefail && lspci | grep -i 'VGA\|3D\|display' # noqa command-instead-of-shell
   register: gpu_result
   changed_when: no
 
@@ -33,7 +32,7 @@
       - rocm-opencl-sdk
     state: present
   become: true
-  when: ("'radeon' in gpu_result.stdout.lower()") or ("'amd/ati' in gpu_result.stdout.lower()")
+  when: "'advanced' in gpu_result.stdout.lower()"
 
 - name: Install GPU drivers (Intel)
   community.general.pacman:

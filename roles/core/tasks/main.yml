@@ -4,6 +4,7 @@
     name:
       - base
       - base-devel
+      - bat
       - bind
       - btop
       - efibootmgr
@@ -42,21 +43,21 @@
   ansible.builtin.systemd:
     name: systemd-modules-load.service
     state: started
-    enabled: yes
+    enabled: true
   become: true
 
 - name: Start systemd service - systemd-timesyncd
   ansible.builtin.systemd:
     name: systemd-timesyncd
     state: started
-    enabled: yes
+    enabled: true
   become: true
 
 - name: Start systemd service - paccache.timer
   ansible.builtin.systemd:
     name: paccache.timer
     state: started
-    enabled: yes
+    enabled: true
   become: true
 
 - name: Update reflector configuration file
@@ -69,17 +70,17 @@
     mode: 0644
   become: true
 
-- name: Start systemd service - reflector.service
+- name: Enable systemd service - reflector.service
   ansible.builtin.systemd:
     name: reflector.service
-    state: started
+    enabled: true
   become: true
 
 - name: Start systemd service - reflector.timer
   ansible.builtin.systemd:
     name: reflector.timer
     state: started
-    enabled: yes
+    enabled: true
   become: true
 
 - name: Update pacman configuration file
@@ -96,11 +97,11 @@
   ansible.builtin.systemd:
     name: systemd-boot-update.service
     state: started
-    enabled: yes
+    enabled: true
   become: true
 
 - name: Upgrade system
   community.general.pacman:
-    update_cache: yes
-    upgrade: yes
+    update_cache: true
+    upgrade: true
   become: true

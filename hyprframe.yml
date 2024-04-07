@@ -8,7 +8,6 @@
     - intercept_dev: framework
   roles:
     - core
-    - microcode
     - display_server
     - workstation
     - de_wm
