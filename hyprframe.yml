@@ -5,6 +5,7 @@
     - kewlfft.aur.aur
   vars:
     - desktop: hyprland
+    - intercept_dev: framework
   roles:
     - core
     - microcode
@@ -12,6 +13,7 @@
     - workstation
     - de_wm
     - laptop
+    - interception
     - bluetooth
 
   tasks:
@@ -20,5 +22,3 @@
         use: yay
         name:
           - neovim-nightly-bin
-      # become: true
-      # become_user: aur_builder

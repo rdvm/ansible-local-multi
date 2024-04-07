@@ -1,0 +1,20 @@
+---
+- name: Add caps2esc config for Framework laptop keyboard
+  when: intercept_dev == "framework"
+  block:
+    - name: caps2esc for Framework
+      ansible.builtin.template:
+        src: framework.yaml.j2
+        dest: /etc/interception/udevmon.d/framework.yaml
+        backup: no
+        owner: root
+        group: root
+        mode: 0644
+      become: true
+
+    - name: Enable udevmon service and make sure it's started
+      ansible.builtin.systemd_service:
+        name: udevmon
+        enabled: true
+        state: started
+      become: true
