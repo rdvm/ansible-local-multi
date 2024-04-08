@@ -1,16 +1,16 @@
 # vim: ft=yaml.ansible
 ---
-- name: Install wally cli tool
+- name: Install power management packages
   community.general.pacman:
     name:
-      - zsa-wally-cli
+      - solaar
     state: present
   become: true
 
-- name: Create drop-in for ZSA keyboard udev rules
+- name: Create drop-in for Solaar on Wayland
   ansible.builtin.copy:
-    src: 50-zsa.rules
-    dest: /etc/udev/rules.d/50-zsa.rules
+    src: 42-logitech-unify-permissions.rules
+    dest: /etc/udev/rules.d/42-logitech-unify-permissions.rules
     backup: false
     force: false
     owner: root

@@ -20,6 +20,7 @@
     - smb_share
     - bluetooth
     - wally
+    - solaar
 
   tasks:
     - name: Install neovim-nightly

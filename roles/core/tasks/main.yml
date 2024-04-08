@@ -21,6 +21,7 @@
       - btop
       - efibootmgr
       - fd
+      - file-roller
       - fzf
       - git
       - htop
