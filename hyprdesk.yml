@@ -1,0 +1,29 @@
+# vim: ft=yaml.ansible
+---
+- name: Hyprdesk playbook
+  hosts: 127.0.0.1
+  connection: local
+
+  collections:
+    - kewlfft.aur.aur
+
+  vars:
+    desktop: hyprland
+
+  roles:
+    - core
+    - display_server
+    - workstation
+    - de_wm
+    - user
+    - desktop
+    - smb_share
+    - bluetooth
+    - wally
+
+  tasks:
+    - name: Install neovim-nightly
+      kewlfft.aur.aur:
+        use: yay
+        name:
+          - neovim-nightly-bin

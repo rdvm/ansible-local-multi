@@ -1,5 +1,12 @@
 # vim: ft=yaml.ansible
 ---
+- name: Install interception-caps2esc
+  community.general.pacman:
+    name:
+      - interception-caps2esc
+    state: present
+  become: true
+
 - name: Add caps2esc config for Framework laptop keyboard
   when: intercept_dev == "framework"
   block:

@@ -1,0 +1,10 @@
+# vim: ft=yaml.ansible
+---
+- name: Install power management packages
+  community.general.pacman:
+    name:
+      - handbrake
+      - solaar
+      - zram-generator
+    state: present
+  become: true

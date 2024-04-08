@@ -1,0 +1,25 @@
+# vim: ft=yaml.ansible
+---
+- name: Install wally cli tool
+  community.general.pacman:
+    name:
+      - zsa-wally-cli
+    state: present
+  become: true
+
+- name: Create drop-in for ZSA keyboard udev rules
+  ansible.builtin.copy:
+    src: 50-zsa.rules
+    dest: /etc/udev/rules.d/50-zsa.rules
+    backup: false
+    force: false
+    owner: root
+    group: root
+    mode: "0644"
+  become: true
+
+- name: Add user to `plugdev` group
+  ansible.builtin.user:
+    name: ace
+    groups: plugdev
+    append: true

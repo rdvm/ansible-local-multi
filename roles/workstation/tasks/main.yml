@@ -12,7 +12,6 @@
       - fastfetch
       - firefox
       - fwupd
-      - interception-caps2esc
       - mpv
       - network-manager-applet
       - networkmanager
