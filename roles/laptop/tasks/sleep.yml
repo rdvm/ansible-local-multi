@@ -1,22 +1,43 @@
+# vim: ft=yaml.ansible
 ---
+- name: Create login.conf.d dir
+  ansible.builtin.file:
+    path: /etc/systemd/logind.conf.d
+    state: directory
+    recurse: true
+    owner: root
+    group: root
+    mode: "0755"
+  become: true
+
 - name: Create drop-in for logind conf
   ansible.builtin.copy:
-    src: ../templates/logind.conf
+    src: logind.conf
     dest: /etc/systemd/logind.conf.d/logind.conf
-    backup: no
+    backup: false
     force: false
     owner: root
     group: root
-    mode: 0644
+    mode: "0644"
+  become: true
+
+- name: Create sleep.conf.d dir
+  ansible.builtin.file:
+    path: /etc/systemd/sleep.conf.d
+    state: directory
+    recurse: true
+    owner: root
+    group: root
+    mode: "0755"
   become: true
 
 - name: Create drop-in for sleep conf
   ansible.builtin.copy:
-    src: ../templates/sleep.conf
+    src: sleep.conf
     dest: /etc/systemd/sleep.conf.d/sleep.conf
-    backup: no
+    backup: false
     force: false
     owner: root
     group: root
-    mode: 0644
+    mode: "0644"
   become: true

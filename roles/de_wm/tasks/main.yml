@@ -1,3 +1,4 @@
+# vim: ft=yaml.ansible
 ---
 - name: Install Hyprland
   when: desktop == "hyprland"
@@ -39,11 +40,8 @@
           - wlogout
         state: present
 
-    - name: Start systemd service - sddm.service
-      ansible.builtin.systemd:
-        name: sddm.service
-        enabled: true
-      become: true
+    - name: SDDM setup
+      ansible.builtin.import_tasks: sddm.yml
 
 - name: Install desktop environment
   when: desktop == "kde"

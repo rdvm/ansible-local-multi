@@ -1,15 +1,16 @@
+# vim: ft=yaml.ansible
 ---
 - name: Add caps2esc config for Framework laptop keyboard
   when: intercept_dev == "framework"
   block:
-    - name: caps2esc for Framework
+    - name: Create caps2esc rule for Framework
       ansible.builtin.template:
         src: framework.yaml.j2
         dest: /etc/interception/udevmon.d/framework.yaml
-        backup: no
+        backup: true
         owner: root
         group: root
-        mode: 0644
+        mode: "0644"
       become: true
 
     - name: Enable udevmon service and make sure it's started

@@ -1,3 +1,4 @@
+# vim: ft=yaml.ansible
 ---
 - name: Install power management packages
   community.general.pacman:

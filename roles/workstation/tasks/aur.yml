@@ -1,3 +1,4 @@
+# vim: ft=yaml.ansible
 ---
 - name: Installing AUR helper
   kewlfft.aur.aur:

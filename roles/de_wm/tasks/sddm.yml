@@ -1,0 +1,28 @@
+# vim: ft=yaml.ansible
+---
+- name: Create sddm.conf.d dir
+  ansible.builtin.file:
+    path: /etc/sddm.conf.d
+    state: directory
+    recurse: true
+    owner: root
+    group: root
+    mode: "0755"
+  become: true
+
+- name: Create drop-in for sddm.conf
+  ansible.builtin.copy:
+    src: sddm.conf
+    dest: /etc/sddm.conf.d/10-ansible-sddm.conf
+    backup: false
+    force: false
+    owner: root
+    group: root
+    mode: "0644"
+  become: true
+
+- name: Start systemd service - sddm.service
+  ansible.builtin.systemd:
+    name: sddm.service
+    enabled: true
+  become: true

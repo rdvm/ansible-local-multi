@@ -1,4 +1,12 @@
+# vim: ft=yaml.ansible
 ---
+- name: Set HOSTNAME variable at system level
+  ansible.builtin.lineinfile:
+    path: /etc/environment
+    regexp: "^HOSTNAME="
+    line: HOSTNAME=$(uname -n)
+  become: true
+
 - name: Install packages
   community.general.pacman:
     name:
@@ -64,10 +72,10 @@
   ansible.builtin.template:
     src: reflector.conf.j2
     dest: /etc/xdg/reflector/reflector.conf
-    backup: no
+    backup: false
     owner: root
     group: root
-    mode: 0644
+    mode: "0644"
   become: true
 
 - name: Enable systemd service - reflector.service
@@ -87,10 +95,10 @@
   ansible.builtin.template:
     src: pacman.conf.j2
     dest: /etc/pacman.conf
-    backup: no
+    backup: false
     owner: root
     group: root
-    mode: 0644
+    mode: "0644"
   become: true
 
 - name: Start systemd service - systemd-boot-update.service

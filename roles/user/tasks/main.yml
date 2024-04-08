@@ -1,0 +1,7 @@
+# vim: ft=yaml.ansible
+---
+- name: Set shell for ace
+  ansible.builtin.user:
+    name: ace
+    shell: /usr/bin/zsh
+  become: true

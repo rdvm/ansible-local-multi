@@ -1,3 +1,4 @@
+# vim: ft=yaml.ansible
 ---
 - name: AUR setup
   ansible.builtin.import_tasks: aur.yml
