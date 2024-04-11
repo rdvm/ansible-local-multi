@@ -21,7 +21,6 @@
       - btop
       - efibootmgr
       - fd
-      - file-roller
       - fzf
       - git
       - htop
@@ -44,6 +43,7 @@
       - vi
       - vim
       - wget
+      - xarchiver
       - xdg-desktop-portal
       - xdg-utils
       - xterm

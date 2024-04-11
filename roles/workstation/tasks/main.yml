@@ -52,3 +52,8 @@
       - wal-telegram-git
       - wyeb-git
     state: present
+
+- name: Set 'prefer-dark' for GTK apps
+  community.general.dconf:
+    key: "/org/gnome/desktop/interface/color-scheme"
+    value: "'prefer-dark'"
