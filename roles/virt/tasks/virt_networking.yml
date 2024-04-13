@@ -1,0 +1,56 @@
+# vim: ft=yaml.ansible
+---
+- name: KVM | Create virtual bridge interface
+  ansible.builtin.copy:
+    src: 99-br0.netdev
+    dest: /etc/systemd/network/99-br0.netdev
+    backup: false
+    force: false
+    owner: root
+    group: root
+    mode: "0644"
+  become: true
+
+- name: KVM | Assign physical interfaces to virtual bridge
+  ansible.builtin.copy:
+    src: 98-wired.network
+    dest: /etc/systemd/network/98-wired.network
+    backup: false
+    force: false
+    owner: root
+    group: root
+    mode: "0644"
+  become: true
+
+- name: KVM | Configure virtual bridge network
+  ansible.builtin.copy:
+    src: 99-br0.network
+    dest: /etc/systemd/network/99-br0.network
+    backup: false
+    force: false
+    owner: root
+    group: root
+    mode: "0644"
+  become: true
+
+- name: KVM | Create a symbolic link stub-resolv.conf --> resolv.conf
+  ansible.builtin.file:
+    src: /run/systemd/resolve/stub-resolv.conf
+    dest: /etc/resolv.conf
+    state: link
+    force: true
+  become: true
+
+- name: KVM | Enable systemd-resolved and ensure it's started
+  ansible.builtin.systemd_service:
+    name: systemd-resolved
+    enabled: true
+    state: started
+  become: true
+
+- name: KVM | Enable systemd-networkd and ensure it's started
+  ansible.builtin.systemd_service:
+    name: systemd-networkd
+    enabled: true
+    state: started
+  become: true
