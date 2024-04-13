@@ -18,6 +18,7 @@
     - smb_share
     - interception
     - bluetooth
+    - virt
 
   tasks:
     - name: Install neovim-nightly

@@ -1,0 +1,19 @@
+# vim: ft=yaml.ansible
+---
+- name: KVM | virt_support | ensure cpu_support
+  ansible.builtin.shell: set -o pipefail && lscpu | grep -i virtualization
+  register: cpu_support
+  failed_when: cpu_support.rc != 0
+  changed_when: false
+
+- name: KVM | virt_support | ensure kernel_support
+  ansible.builtin.command: zgrep CONFIG_KVM= /proc/config.gz
+  register: kernel_support
+  failed_when: kernel_support.rc != 0
+  changed_when: false
+
+- name: KVM | virt_support | ensure kernel module is loaded
+  ansible.builtin.shell: set -o pipefail && lsmod | grep -i kvm
+  register: kernel_module
+  failed_when: kernel_module.rc != 0
+  changed_when: false

@@ -1,0 +1,62 @@
+# vim: ft=yaml.ansible
+---
+- name: KVM | Ensure virtualization support
+  ansible.builtin.import_tasks: virt_support.yml
+
+- name: KVM | Install iptables-nft with `raw` to explicitly resolve conflict with `iptables`
+  ansible.builtin.raw: |
+    yes | pacman -S iptables-nft
+  args:
+    executable: "/bin/bash"
+  changed_when: false
+  become: true
+
+- name: KVM | Install packages
+  community.general.pacman:
+    name:
+      - virt-manager
+      - virt-viewer
+      - qemu-full
+      - vde2
+      - ebtables
+      - dnsmasq
+      - bridge-utils
+      - openbsd-netcat
+      - libguestfs
+    state: present
+  become: true
+
+- name: KVM | Edit libvirtd.conf
+  ansible.builtin.lineinfile:
+    path: /etc/libvirt/libvirtd.conf
+    line: "{{ item }}"
+  loop:
+    - 'unix_sock_group = "libvirt"'
+    - 'unix_sock_rq_perms = "0770"'
+  become: true
+
+- name: KVM | Edit qemu.conf
+  ansible.builtin.lineinfile:
+    path: /etc/libvirt/qemu.conf
+    line: "{{ item.line }}"
+    regexp: "{{ item.regexp }}"
+  loop:
+    - line: user = "{{ user.name }}"
+      regexp: "^user="
+    - line: group = "{{ user.name }}"
+      regexp: "^group="
+  become: true
+
+- name: KVM | Add user to libvirt
+  ansible.builtin.user:
+    name: "{{ user.name }}"
+    groups: libvirt
+    append: true
+  become: true
+
+- name: KVM | Enable libvirtd and ensure it's started
+  ansible.builtin.systemd_service:
+    name: libvirtd
+    enabled: true
+    state: started
+  become: true

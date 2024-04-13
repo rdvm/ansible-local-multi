@@ -10,7 +10,7 @@
 - name: Detect GPU
   ansible.builtin.shell: set -o pipefail && lspci | grep -i 'VGA\|3D\|display' # noqa command-instead-of-shell
   register: gpu_result
-  changed_when: no
+  changed_when: false
 
 - name: Install GPU drivers (AMD)
   community.general.pacman:

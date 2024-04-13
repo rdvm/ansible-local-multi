@@ -53,7 +53,8 @@
       - wyeb-git
     state: present
 
-- name: Set 'prefer-dark' for GTK apps
-  community.general.dconf:
-    key: "/org/gnome/desktop/interface/color-scheme"
-    value: "'prefer-dark'"
+# NOTE: This was erroring on fresh install; remove for now
+#- name: Set 'prefer-dark' for GTK apps
+#  community.general.dconf:
+#    key: "/org/gnome/desktop/interface/color-scheme"
+#    value: "'prefer-dark'"
