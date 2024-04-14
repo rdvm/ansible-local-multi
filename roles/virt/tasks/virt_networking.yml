@@ -1,57 +1,26 @@
 # vim: ft=yaml.ansible
 ---
-- name: KVM | Create virtual bridge interface
-  ansible.builtin.copy:
-    src: 99-br0.netdev
-    dest: /etc/systemd/network/99-br0.netdev
-    backup: false
-    force: false
-    owner: root
-    group: root
-    mode: "0644"
-  become: true
+- name: KVM | Select ethernet interface name
+  ansible.builtin.set_fact:
+    bridge_slave: "{{ ansible_interfaces | select('match', '^en') | first }}"
 
-- name: KVM | Assign physical interfaces to virtual bridge
-  ansible.builtin.copy:
-    src: 98-wired.network
-    dest: /etc/systemd/network/98-wired.network
-    backup: false
-    force: false
-    owner: root
-    group: root
-    mode: "0644"
-  become: true
+- name: KVM | When compatible interface is present, create bridge and add bridge_slave to bridge
+  when: bridge_slave | length > 0
+  block:
+    - name: KVM | Create NetworkManager bridge network
+      community.general.nmcli:
+        type: bridge
+        conn_name: br0
+        method4: auto
+        method6: disabled
+        state: present
+        stp: false
 
-- name: KVM | Configure virtual bridge network
-  ansible.builtin.copy:
-    src: 99-br0.network
-    dest: /etc/systemd/network/99-br0.network
-    backup: false
-    force: false
-    owner: root
-    group: root
-    mode: "0644"
-  become: true
-
-- name: KVM | Create a symbolic link stub-resolv.conf --> resolv.conf
-  ansible.builtin.file:
-    src: /run/systemd/resolve/stub-resolv.conf
-    dest: /etc/resolv.conf
-    state: link
-    force: true
-    follow: false
-  become: true
-
-- name: KVM | Enable systemd-resolved and ensure it's started
-  ansible.builtin.systemd_service:
-    name: systemd-resolved
-    enabled: true
-    state: started
-  become: true
-
-- name: KVM | Enable systemd-networkd and ensure it's started
-  ansible.builtin.systemd_service:
-    name: systemd-networkd
-    enabled: true
-    state: started
-  become: true
+    - name: KVM | Add bridge_slave interface to bridge
+      nmcli:
+        type: ethernet
+        slave_type: bridge
+        conn_name: "{{ item }}"
+        state: present
+        master: br0
+      with_items: "{{ bridge_slave }}"
