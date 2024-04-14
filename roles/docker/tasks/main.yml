@@ -1,0 +1,52 @@
+# vim: ft=yaml.ansible
+---
+- name: Docker | Install Docker, Docker Compose
+  community.general.pacman:
+    name:
+      - docker
+      - docker-compose
+    state: present
+  become: true
+
+- name: Docker | Create 'docker' group if not already present
+  ansible.builtin.group:
+    name: docker
+    system: true
+  become: true
+
+- name: Docker | Add user to the 'docker' group
+  ansible.builtin.user:
+    name: "{{ user.name }}"
+    groups:
+      - docker
+    append: true
+  become: true
+
+- name: Docker | Enable Docker socket on startup
+  ansible.builtin.systemd:
+    name: docker.socket
+    enabled: true
+  become: true
+
+- name: Docker | Create /etc/docker directory if it does not exist
+  ansible.builtin.file:
+    path: /etc/docker
+    state: directory
+    mode: "0755"
+  become: true
+
+- name: Docker | Set default max logs size to 250MB and set logs rotation
+  ansible.builtin.copy:
+    dest: "/etc/docker/daemon.json"
+    content: |
+      {
+        "log-driver": "json-file",
+        "log-opts": {
+          "max-size": "50m",
+          "max-file": "5"
+        }
+      }
+    owner: root
+    group: root
+    mode: "0644"
+  become: true

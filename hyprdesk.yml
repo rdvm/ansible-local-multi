@@ -21,6 +21,8 @@
     - bluetooth
     - wally
     - solaar
+    - virt
+    - docker
 
   tasks:
     - name: Install neovim-nightly

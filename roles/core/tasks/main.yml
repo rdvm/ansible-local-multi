@@ -28,6 +28,7 @@
       - libfido2
       - man-db
       - man-pages
+      - molecule
       - openssh
       - pacman-contrib
       - reflector
