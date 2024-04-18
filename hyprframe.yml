@@ -19,6 +19,7 @@
     - interception
     - bluetooth
     - virt
+    - docker
 
   tasks:
     - name: Install neovim-nightly

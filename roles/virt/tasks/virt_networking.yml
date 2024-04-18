@@ -2,7 +2,7 @@
 ---
 - name: KVM | Select ethernet interface name
   ansible.builtin.set_fact:
-    bridge_slave: "{{ ansible_interfaces | select('match', '^en') | first }}"
+    bridge_slave: "{{ ansible_interfaces | select('match', '^en') | first | default('') }}"
 
 - name: KVM | When compatible interface is present, create bridge and add bridge_slave to bridge
   when: bridge_slave | length > 0

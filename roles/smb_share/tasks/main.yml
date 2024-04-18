@@ -3,16 +3,18 @@
   ansible.posix.mount:
     src: //debsrv01/Backup
     path: /mnt/nas/backup
-    opts: "guest,x-systemd.automount,iocharset=utf8,file_mode=0777,dir_mode=0777"
+    opts: "guest,x-systemd.automount,_netdev,iocharset=utf8,file_mode=0777,dir_mode=0777"
     fstype: cifs
     state: mounted
   become: true
+  tags: once
 
 - name: Mount Media SMB share
   ansible.posix.mount:
     src: //debsrv01/Media
     path: /mnt/nas/media
-    opts: "guest,x-systemd.automount,iocharset=utf8,file_mode=0777,dir_mode=0777"
+    opts: "guest,x-systemd.automount,_netdev,iocharset=utf8,file_mode=0777,dir_mode=0777"
     fstype: cifs
     state: mounted
   become: true
+  tags: once
